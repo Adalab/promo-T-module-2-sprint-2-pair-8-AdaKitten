@@ -17,7 +17,7 @@ const input_search_desc = document.querySelector('.js_in_search_desc');
 const input_search_race = document.querySelector('.js_in_search_race');
 
 //Objetos con cada gatito
-const kittenData_1 = {
+/*const kittenData_1 = {
   image: 'https://dev.adalab.es/gato-siames.webp',
   name: 'Anastacio',
   desc: 'Porte elegante, su patrón de color tan característico y sus ojos de un azul intenso, pero su historia se remonta a Asía al menos hace 500 años, donde tuvo su origen muy posiblemente.',
@@ -34,9 +34,7 @@ const kittenData_3 = {
   name: 'Cielo',
   desc: ' Tienen la cabeza cuadrada y los ojos simétricos, por lo que su bella mirada se ha convertido en una de sus señas de identidad. Sus ojos son grandes y las orejas resultan largas y en punta.',
   race: 'Maine Coon',
-};
-
-const kittenDataList = [kittenData_1, kittenData_2, kittenData_3];
+};*/
 
 //Funciones
 function renderKitten(kittenData) {
@@ -80,12 +78,13 @@ function handleClickNewCatForm(event) {
     hideNewCatForm();
   }
 }
+
 //Adicionar nuevo gatito
 function addNewKitten(event) {
-    const valueDesc = inputDesc.value;
-    const valuePhoto = inputPhoto.value;
-    const valueName = inputName.value;
-    const valueRace = inputRace.value;
+  const valueDesc = inputDesc.value;
+  const valuePhoto = inputPhoto.value;
+  const valueName = inputName.value;
+  const valueRace = inputRace.value;
 
   const newKittenDataObject = {
     image: valuePhoto,
@@ -105,6 +104,7 @@ function addNewKitten(event) {
     labelMessageError.innerHTML = 'Mola! Un nuevo gatito en Adalab!';
   }
 }
+
 //Cancelar la búsqueda de un gatito
 function cancelNewKitten(event) {
   event.preventDefault();
@@ -117,18 +117,31 @@ function cancelNewKitten(event) {
 //Filtrar por descripción
 function filterKitten(event) {
   event.preventDefault();
-  const filterKittenDataList = kittenDataList.
-   filter ( (filterDesc) => filterDesc.desc.includes (input_search_desc.value))
-  .filter ( (filterRace) => filterRace.race.includes (input_search_race.value));
+  const filterKittenDataList = kittenDataList
+    .filter((filterDesc) => filterDesc.desc.includes(input_search_desc.value))
+    .filter((filterRace) => filterRace.race.includes(input_search_race.value));
   renderKittenList(filterKittenDataList);
-
 }
 
-//Mostrar el litado de gatitos en ell HTML
-renderKittenList(kittenDataList);
+//Mostrar el litado de gatitos en el HTML
+//renderKittenList(kittenDataList);
 
 //Eventos
 linkNewFormElememt.addEventListener('click', handleClickNewCatForm);
 searchButton.addEventListener('click', filterKitten);
 buttonAdd.addEventListener('click', addNewKitten);
 buttonCancelForm.addEventListener('click', cancelNewKitten);
+
+
+//6 junio - Obtener listado de gatitos desde el servidor
+let kittenDataList = [];
+
+const GITHUB_USER = '<raquelgarciat>';
+const SERVER_URL = 'https://dev.adalab.es/api/kittens/${GITHUB_USER}';
+
+fetch(SERVER_URL)
+  .then((response) => response.json())
+  .then((data) => {
+    kittenDataList = data.results;
+    renderKittenList(kittenDataList);
+  });
