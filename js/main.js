@@ -139,9 +139,38 @@ let kittenDataList = [];
 const GITHUB_USER = '<raquelgarciat>';
 const SERVER_URL = 'https://dev.adalab.es/api/kittens/${GITHUB_USER}';
 
-fetch(SERVER_URL)
+/*fetch(SERVER_URL)
   .then((response) => response.json())
   .then((data) => {
     kittenDataList = data.results;
     renderKittenList(kittenDataList);
-  });
+  });*/
+
+  // 7 junio - Guardar en el Local Storage
+  const kittenListStored = JSON.parse(localStorage.getItem('kittensList'));
+
+  if (kittenListStored !== null) {
+  //si existe el listado de gatitos en el local storage
+  // vuelve a pintar el listado de gatitos
+  //...
+  //completa el código...
+  kittenDataList=kittenListStored;
+  renderKittenList(kittenDataList);
+  console.log(kittenListStored)
+} else {
+  //sino existe el listado de gatitos en el local storage
+  //haz la petición al servidor
+  fetch(SERVER_URL)
+    .then((response) => response.json())
+    .then((data) => {
+      kittenDataList = data.results;
+      localStorage.setItem('kittensList', JSON.stringify);
+      renderKittenList(kittenDataList);
+      //guarda el listado obtenido en el local storage.
+      //vuelve a pintar el listado de gatitos
+      //completa el código...
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
